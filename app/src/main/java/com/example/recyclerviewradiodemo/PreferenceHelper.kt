@@ -34,31 +34,7 @@ class PreferenceHelper(context: Context) {
         editor.apply()
     }
 
-    // --- Sub-Item Text Color ---
-    fun setSubItemTextColorData(tabId: String, parentTitle: String, subItemTitle: String, color: String) {
-        val key = "subItemTextColor_${tabId}_${parentTitle}_$subItemTitle"
-        preferences.edit().putString(key, color).apply()
-        Log.d("PreferenceHelper", "Saving sub-item color for key $key: $color")
-    }
 
-    fun getSubItemTextColorData(tabId: String, parentTitle: String, subItemTitle: String): String? {
-        val key = "subItemTextColor_${tabId}_${parentTitle}_$subItemTitle"
-        return preferences.getString(key, null)
-    }
-
-    fun clearSubItemTextColorsForParent(tabId: String, parentTitle: String) {
-        val editor = preferences.edit()
-        val prefix = "subItemTextColor_${tabId}_${parentTitle}_"
-        val keysToRemove = preferences.all.keys.filter { it.startsWith(prefix) }
-        keysToRemove.forEach {
-            editor.remove(it)
-            Log.d("PreferenceHelper", "Removing sub-item text color key: $it")
-        }
-        editor.apply()
-        Log.d("PreferenceHelper", "Cleared sub-item text colors for parent $parentTitle on tab $tabId.")
-    }
-
-    // --- Radio Button Color ---
     fun setRadioButtonColorData(subItemTitle: String, color: String) {
         preferences.edit().putString("radioButtonColor_$subItemTitle", color).apply()
     }

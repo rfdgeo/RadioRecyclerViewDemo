@@ -1,5 +1,6 @@
 package com.example.recyclerviewradiodemo.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -132,14 +133,15 @@ class ParameterActivity : AppCompatActivity(), ParentParameterAdapter.UpdateList
         outState.putBoolean("IS_RV_EXPANDED", isRecyclerViewExpanded)
     }
 
-    override fun onSubItemUpdated(collectionName: String, allClickData: Map<String, List<Int>>) {
+    @SuppressLint("SetTextI18n", "InflateParams")
+    override fun onSubItemUpdated(collectionTitle: String, subItemSelections: Map<String, List<Int>>) {
         // Convert List<Int> to Set<String> for internal use
-        val selectedTitles = allClickData.keys.toMutableSet()
-        aggregatedClickData[collectionName] = selectedTitles
+        val selectedTitles = subItemSelections.keys.toMutableSet()
+        aggregatedClickData[collectionTitle] = selectedTitles
 
         Log.d(
             "ParameterActivity",
-            "onSubItemUpdated: Data to be saved: $aggregatedClickData for collectionName: $collectionName"
+            "onSubItemUpdated: Data to be saved: $aggregatedClickData for collectionName: $collectionTitle"
         )
 
         // Update text, progress, and completion status
@@ -150,7 +152,7 @@ class ParameterActivity : AppCompatActivity(), ParentParameterAdapter.UpdateList
         // ✅ Collapse the parent item and full screen (if any)
 //        onParentItemClickedForFullScreenToggle(-1)
 
-        val parentToCollapse = originalCollections.find { it.parentParameterTitle == collectionName }
+        val parentToCollapse = originalCollections.find { it.parentParameterTitle == collectionTitle }
         parentToCollapse?.isExpanded = false
 
         if (isRecyclerViewExpanded) {
@@ -167,7 +169,7 @@ class ParameterActivity : AppCompatActivity(), ParentParameterAdapter.UpdateList
         // Inflate custom layout
         val customView = layoutInflater.inflate(R.layout.snackbar_custom, null)
         val textView = customView.findViewById<TextView>(R.id.snackbar_text)
-        textView.text = "Saved: $collectionName"
+        textView.text = "Saved: $collectionTitle"
 
         // Set background color from colors.xml
         customView.setBackgroundColor(ContextCompat.getColor(this, R.color.light_orange))

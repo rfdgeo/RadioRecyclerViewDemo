@@ -40,18 +40,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         preferenceHelper.clearParentTextColorData()
     }
 
-     //--- Sub-Item Text Color ---
-//    fun setSubItemTextColorData(tabId: String, parentTitle: String, subItemTitle: String, color: String) {
-//        preferenceHelper.setSubItemTextColorData(tabId, parentTitle, subItemTitle, color)
-//    }
-//
-//    fun getSubItemTextColorData(tabId: String, parentTitle: String, subItemTitle: String): String? {
-//        return preferenceHelper.getSubItemTextColorData(tabId, parentTitle, subItemTitle)
-//    }
-//
-//    fun clearSubItemTextColorsForParent(tabId: String, parentTitle: String) {
-//        preferenceHelper.clearSubItemTextColorsForParent(tabId, parentTitle)
-//    }
 
     // --- Radio Button Text Color ---
     fun setRadioButtonColorData(subItemTitle: String, color: String) {
