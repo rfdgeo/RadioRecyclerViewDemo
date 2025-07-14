@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/openChild"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="10dp"
+        android:background="#E1F5FE"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/recyclerview_background"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/imgList"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvParentTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvParentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textSize="20sp"
+                android:padding="8dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imgList"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <!-- New TextView for selected sub-items -->
+            <TextView
+                android:id="@+id/tvSelectedSubItems"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="20sp"
+                android:text="@string/selected"
+                android:textStyle="bold"
+                android:textColor="@color/teal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvParentTitle"
+                app:layout_constraintTop_toTopOf="@id/tvParentTitle"
+                app:layout_constraintBottom_toBottomOf="@id/tvParentTitle"
+                tools:text="Selected: morningglucose, weight" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSubItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tvParentTitle"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

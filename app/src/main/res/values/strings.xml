@@ -1,0 +1,10 @@
+<resources>
+    <string name="parameter_title">Parameter Settings</string>
+    <string name="next">Next</string>
+    <string name="remove_update">Clear</string>
+    <string name="previous">Previous</string>
+    <string name="selected">Selected:</string>
+    <string name="make_a_choice_in_each_category">Make a choice in each Category:</string>
+    <string name="main_menu">Click to Open Main Menu</string>
+    <string name="app_name">Radio Choice Recyclerview</string>
+</resources>
