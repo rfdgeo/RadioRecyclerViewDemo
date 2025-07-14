@@ -77,8 +77,7 @@ class ParentParameterAdapter(
                         }
                     },
                     collection.parentParameterTitle,
-                    sharedViewModel,
-                    this
+                    sharedViewModel
                 )
             }
 

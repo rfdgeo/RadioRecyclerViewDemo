@@ -2,20 +2,14 @@ package com.example.recyclerviewradiodemo.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerviewradiodemo.R
-import com.example.recyclerviewradiodemo.databinding.ParentParameterBinding
 import com.example.recyclerviewradiodemo.databinding.SubParameterBinding
 import com.example.recyclerviewradiodemo.models.SharedViewModel
 import com.example.recyclerviewradiodemo.models.SubParameterModel
@@ -24,8 +18,7 @@ class SubParameterAdapter(
     private val subParameterModel: List<SubParameterModel>,
     private val subAdapterListener: Any,
     private val parentCollectionTitle: String,
-    private val sharedViewModel: SharedViewModel,
-    sharedViewModel1: ParentParameterBinding // ← Consider renaming this param if not used
+    private val sharedViewModel: SharedViewModel
 ) : RecyclerView.Adapter<SubParameterAdapter.ViewHolder>() {
 
     private lateinit var context: Context
