@@ -178,17 +178,5 @@ class ParentParameterAdapter(
         notifyDataSetChanged()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun collapseAllParents() {
-        var changed = false
-        parametercollections.forEach {
-            if (it.isExpanded) {
-                it.isExpanded = false
-                changed = true
-            }
-        }
-        if (changed) {
-            notifyDataSetChanged()
-        }
-    }
+
 }

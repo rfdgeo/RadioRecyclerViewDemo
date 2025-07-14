@@ -12,10 +12,9 @@ import com.example.recyclerviewradiodemo.activities.ParameterActivity
 import com.example.recyclerviewradiodemo.databinding.ParentMainBinding
 import com.example.recyclerviewradiodemo.models.MainMenuModel
 
-@Suppress("UNUSED_EXPRESSION")
 class MainRvAdapter(private var mainmenucollections: List<MainMenuModel>) :
     RecyclerView.Adapter<MainRvAdapter.CollectionsViewHolder>() {
-    lateinit var context: Context
+    private lateinit var context: Context
 
     class CollectionsViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
 
@@ -40,7 +39,6 @@ class MainRvAdapter(private var mainmenucollections: List<MainMenuModel>) :
 
             imageView.setImageResource(mainmenucollection.imageResId)
 
-            //textView.text = mainmenucollection.mainHeading
 
             mainMenuClick.setOnClickListener {
 
@@ -56,6 +54,5 @@ class MainRvAdapter(private var mainmenucollections: List<MainMenuModel>) :
 
         }
     }
-
 
 }
