@@ -17,7 +17,7 @@ import com.example.recyclerviewradiodemo.models.ParentParameterModel
 import com.example.recyclerviewradiodemo.models.SharedViewModel
 
 class ParentParameterAdapter(
-    private var parametercollections: List<ParentParameterModel>,
+    private var parameterCollections: List<ParentParameterModel>,
     private val listener: UpdateListener,
     private val sharedViewModel: SharedViewModel,
     private val context: Context
@@ -32,7 +32,7 @@ class ParentParameterAdapter(
     private val parentSelectionState = mutableMapOf<String, Boolean>()
 
     init {
-        parametercollections.forEach { collection ->
+        parameterCollections.forEach { collection ->
             val parentTitle = collection.parentParameterTitle
             val savedColorString = sharedViewModel.getParentTextColorData("textData_$parentTitle")
             parentSelectionState[parentTitle] = savedColorString == "orange"
@@ -40,7 +40,7 @@ class ParentParameterAdapter(
     }
 
     class CollectionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ParentParameterBinding.bind(itemView)
+        val binding: ParentParameterBinding = ParentParameterBinding.bind(itemView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionsViewHolder {
@@ -49,13 +49,16 @@ class ParentParameterAdapter(
         return CollectionsViewHolder(view)
     }
 
+    override fun getItemCount(): Int = parameterCollections.size
+
     override fun onBindViewHolder(holder: CollectionsViewHolder, position: Int) {
-        val collection = parametercollections[position]
+        val collection = parameterCollections[position]
         val parentTitle = collection.parentParameterTitle
 
         holder.binding.apply {
             imgList.setImageResource(collection.iconResource)
             tvParentTitle.text = parentTitle
+
             loadParentTextColor(tvParentTitle, parentTitle)
             displaySelectedSubItems(tvSelectedSubItems, parentTitle)
 
@@ -72,7 +75,11 @@ class ParentParameterAdapter(
                             val hasSelections = currentSelections.any { it.value.isNotEmpty() }
                             parentSelectionState[parentCollectionTitle] = hasSelections
 
-                            updateParentTextColorOnSelection(tvParentTitle, parentCollectionTitle, hasSelections)
+                            updateParentTextColorOnSelection(
+                                tvParentTitle,
+                                parentCollectionTitle,
+                                hasSelections
+                            )
                             displaySelectedSubItems(tvSelectedSubItems, parentCollectionTitle)
                         }
                     },
@@ -83,8 +90,8 @@ class ParentParameterAdapter(
 
             rvSubItem.adapter = subItemAdapter
             rvSubItem.layoutManager = LinearLayoutManager(context)
-
             rvSubItem.visibility = if (collection.isExpanded) View.VISIBLE else View.GONE
+
             tvParentTitle.setTextColor(
                 ContextCompat.getColor(
                     context,
@@ -100,50 +107,48 @@ class ParentParameterAdapter(
         }
     }
 
-    override fun getItemCount(): Int = parametercollections.size
-
     private fun loadParentTextColor(textView: TextView, parentTitle: String) {
         val savedColor = sharedViewModel.getParentTextColorData(parentTitle)
-        val color = when (savedColor) {
-            "orange" -> ContextCompat.getColor(context, R.color.orange)
-            else -> ContextCompat.getColor(context, R.color.black)
-        }
-        textView.setTextColor(color)
-    }
-
-    private fun updateParentTextColorOnSelection(textView: TextView, parentTitle: String, hasSelections: Boolean) {
-        val color = if (hasSelections)
+        val color = if (savedColor == "orange")
             ContextCompat.getColor(context, R.color.orange)
         else
             ContextCompat.getColor(context, R.color.black)
 
         textView.setTextColor(color)
+    }
 
-        val parameterIndex = (context as? ParameterActivity)?.getCurrentTabId() ?: "unknown_tab"
+    private fun updateParentTextColorOnSelection(
+        textView: TextView,
+        parentTitle: String,
+        hasSelections: Boolean
+    ) {
+        val colorRes = if (hasSelections) R.color.orange else R.color.black
+        textView.setTextColor(ContextCompat.getColor(context, colorRes))
+
+        val tabId = (context as? ParameterActivity)?.getCurrentTabId() ?: "unknown_tab"
         val colorString = if (hasSelections) "orange" else "black"
-        sharedViewModel.setParentTextColorData("textData_${parameterIndex}_$parentTitle", colorString)
-        Log.d("ParentParameterAdapter", "Saved color for $parentTitle on tab $parameterIndex: $colorString")
+        sharedViewModel.setParentTextColorData("textData_${tabId}_$parentTitle", colorString)
+
+        Log.d("ParentParameterAdapter", "Saved color for $parentTitle on tab $tabId: $colorString")
     }
 
     private fun displaySelectedSubItems(textView: TextView, parentTitle: String) {
         val sharedPreferences = context.getSharedPreferences("MenuChoice", Context.MODE_PRIVATE)
         val key = "textData_4"
         val textData = sharedPreferences.getString(key, "") ?: ""
-        Log.d("ParentParameterAdapter", "displaySelectedSubItems: Retrieved data: '$textData' for key: '$key'")
 
         val selectedItems = mutableListOf<String>()
         if (textData.isNotEmpty()) {
             val parts = textData.split("\n")
             var currentSection = ""
+
             for (part in parts) {
-                if (part.contains("Muscle Group")) currentSection = "Muscle Group"
-                else if (part.contains("Workout Durations")) currentSection = "Workout Durations"
-                else if (part.contains("Fitness Levels")) currentSection = "Fitness Levels"
-                else if (part.contains("Exercise Type")) currentSection = "Exercise Type"
-                else {
-                    if (parentTitle == currentSection) {
-                        selectedItems.add(part.trim())
-                    }
+                when {
+                    part.contains("Muscle Group") -> currentSection = "Muscle Group"
+                    part.contains("Workout Durations") -> currentSection = "Workout Durations"
+                    part.contains("Fitness Levels") -> currentSection = "Fitness Levels"
+                    part.contains("Exercise Type") -> currentSection = "Exercise Type"
+                    else -> if (parentTitle == currentSection) selectedItems.add(part.trim())
                 }
             }
         }
@@ -166,7 +171,7 @@ class ParentParameterAdapter(
     fun updateCollections(newCollections: List<ParentParameterModel>) {
         subAdaptersMap.clear()
         parentSelectionState.clear()
-        parametercollections = newCollections
+        parameterCollections = newCollections
 
         newCollections.forEach { collection ->
             val parentTitle = collection.parentParameterTitle
@@ -176,6 +181,4 @@ class ParentParameterAdapter(
 
         notifyDataSetChanged()
     }
-
-
 }
